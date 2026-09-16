@@ -8,13 +8,13 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>COGWARTS</title>
+<title>COBEWARTS</title>
 
 
 <style>
 
 /* =========================================================
-   COGWARTS TYPE SYSTEM
+   COBEWARTS TYPE SYSTEM
 ========================================================= */
 
 :root {
@@ -228,7 +228,7 @@ input {
 
 
 /* =========================================================
-   GLOBAL COGWARTS LOGO
+   GLOBAL COBEWARTS LOGO
 ========================================================= */
 
 .site-logo {
@@ -272,7 +272,7 @@ input {
 
 /* =========================================================
    PAGE 1
-   COBE → COGWARTS
+   COBE → COBEWARTS
 ========================================================= */
 
 #page1 {
@@ -331,7 +331,7 @@ input {
 }
 
 
-.logo-cogwarts {
+.logo-cobewarts {
 
     opacity: 0;
 }
@@ -349,10 +349,10 @@ input {
 
 
 .logo-stage.transforming
-.logo-cogwarts {
+.logo-cobewarts {
 
     animation:
-        cogwartsIn
+        cobewartsIn
         1.5s
         ease
         forwards;
@@ -375,7 +375,7 @@ input {
 }
 
 
-@keyframes cogwartsIn {
+@keyframes cobewartsIn {
 
     0% {
         opacity: 0;
@@ -1307,7 +1307,7 @@ input {
 
 <!-- =========================================================
      PAGE 1
-     COBE → COGWARTS → LETTER → YOU'RE INVITED
+     COBE → COBEWARTS → LETTER → YOU'RE INVITED
 ========================================================= -->
 
 <section
@@ -1328,9 +1328,9 @@ input {
 
 
         <div
-            class="logo-word logo-cogwarts"
+            class="logo-word logo-cobewarts"
         >
-            Cogwarts
+            Cobewarts
         </div>
 
 
@@ -1427,7 +1427,7 @@ input {
         type="button"
         data-return-page
     >
-        Cogwarts
+        Cobewarts
     </button>
 
 
@@ -1493,7 +1493,7 @@ input {
         type="button"
         data-return-page
     >
-        Cogwarts
+        Cobewarts
     </button>
 
 
@@ -1531,7 +1531,7 @@ input {
 <div
                 class="choice-drawing type-small"
             >
-                <img class="choice-image" src="cogwarts_icons/rhino_file.png" alt="Rhino File">
+                <img class="choice-image" src="cobewarts_icons/rhino_file.png" alt="Rhino File">
             </div>
 
 
@@ -1555,7 +1555,7 @@ input {
 <div
                 class="choice-drawing type-small"
             >
-                <img class="choice-image" src="cogwarts_icons/technical_drawings.png" alt="Technical Drawings">
+                <img class="choice-image" src="cobewarts_icons/technical_drawings.png" alt="Technical Drawings">
             </div>
 
 
@@ -1579,7 +1579,7 @@ input {
 <div
                 class="choice-drawing type-small"
             >
-                <img class="choice-image" src="cogwarts_icons/coffee_machine.png" alt="Coffee Machine">
+                <img class="choice-image" src="cobewarts_icons/coffee_machine.png" alt="Coffee Machine">
             </div>
 
 
@@ -1603,7 +1603,7 @@ input {
 <div
                 class="choice-drawing type-small"
             >
-                <img class="choice-image" src="cogwarts_icons/3d_printer.png" alt="3D Printer">
+                <img class="choice-image" src="cobewarts_icons/3d_printer.png" alt="3D Printer">
             </div>
 
 
@@ -1636,7 +1636,7 @@ input {
         type="button"
         data-return-page
     >
-        Cogwarts
+        Cobewarts
     </button>
 
 
@@ -1682,7 +1682,7 @@ input {
         type="button"
         data-return-page
     >
-        Cogwarts
+        Cobewarts
     </button>
 
 
@@ -1932,7 +1932,7 @@ setTimeout(
 
 
 /*
-   Show letter after Cogwarts.
+   Show letter after Cobewarts.
 */
 
 setTimeout(
@@ -1940,7 +1940,7 @@ setTimeout(
 
         if (
             localStorage.getItem(
-                "cogwartsResult"
+                "cobewartsResult"
             )
         ) {
             return;
@@ -2124,7 +2124,7 @@ const ROSTER_API_URL =
 
 function getParticipantId() {
 
-    const storageKey = "cogwartsParticipantId";
+    const storageKey = "cobewartsParticipantId";
 
     let participantId =
         localStorage.getItem(storageKey);
@@ -2138,13 +2138,13 @@ function getParticipantId() {
         ) {
 
             participantId =
-                "cogwarts_" +
+                "cobewarts_" +
                 window.crypto.randomUUID();
 
         } else {
 
             participantId =
-                "cogwarts_" +
+                "cobewarts_" +
                 Math.random().toString(36).slice(2) +
                 Date.now().toString(36);
 
@@ -2215,7 +2215,7 @@ function saveToSharedRoster(
 function showStoredResult() {
 
     const storedResult =
-        localStorage.getItem("cogwartsResult");
+        localStorage.getItem("cobewartsResult");
 
     if (!storedResult) {
         return false;
@@ -2339,7 +2339,7 @@ function saveResult(
 
 
     localStorage.setItem(
-        "cogwartsResult",
+        "cobewartsResult",
         JSON.stringify(result)
     );
 
@@ -2374,7 +2374,7 @@ choices.forEach(
 
                 if (
                     localStorage.getItem(
-                        "cogwartsResult"
+                        "cobewartsResult"
                     )
                 ) {
                     return;
@@ -2505,7 +2505,7 @@ choices.forEach(
 
 
 /* =========================================================
-   COGWARTS → RESTART TEST
+   COBEWARTS → RESTART TEST
 ========================================================= */
 
 const returnButtons =
@@ -2528,7 +2528,7 @@ returnButtons.forEach(
 
                 if (
                     localStorage.getItem(
-                        "cogwartsResult"
+                        "cobewartsResult"
                     )
                 ) {
 
