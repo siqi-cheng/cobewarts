@@ -2107,6 +2107,100 @@ nameInput.addEventListener(
 
 
 /* =========================================================
+   SHARED ROSTER API
+========================================================= */
+
+const ROSTER_API_URL =
+    "https://script.google.com/macros/s/AKfycbyqz66b1RrAN9qd_ciyyrgBwtkfilxUK5KIR4hhOdvGt6FwLnbQy5mVwqsIJc21IyA/exec";
+
+
+function getParticipantId() {
+
+    const storageKey = "cogwartsParticipantId";
+
+    let participantId =
+        localStorage.getItem(storageKey);
+
+
+    if (!participantId) {
+
+        if (
+            window.crypto &&
+            typeof window.crypto.randomUUID === "function"
+        ) {
+
+            participantId =
+                "cogwarts_" +
+                window.crypto.randomUUID();
+
+        } else {
+
+            participantId =
+                "cogwarts_" +
+                Math.random().toString(36).slice(2) +
+                Date.now().toString(36);
+
+        }
+
+
+        localStorage.setItem(
+            storageKey,
+            participantId
+        );
+
+    }
+
+
+    return participantId;
+
+}
+
+
+function saveToSharedRoster(
+    fullName,
+    house
+) {
+
+    const participantId =
+        getParticipantId();
+
+
+    const params =
+        new URLSearchParams({
+            action: "save",
+            id: participantId,
+            name: fullName,
+            house: house
+        });
+
+
+    /*
+       Google Apps Script is used as a simple GET API.
+       no-cors lets the browser send the request without
+       exposing the response to the page. The Sheet receives
+       the data even though the response is opaque.
+    */
+
+    fetch(
+        ROSTER_API_URL + "?" + params.toString(),
+        {
+            method: "GET",
+            mode: "no-cors",
+            keepalive: true
+        }
+    ).catch(
+        function() {
+            /*
+               The local result still works if the network
+               is temporarily unavailable.
+            */
+        }
+    );
+
+}
+
+
+/* =========================================================
    HOUSE DATA
 ========================================================= */
 
@@ -2122,7 +2216,7 @@ const houseJokes = {
         "The cleverest Ravenclaws always have the backup file.",
 
     Gryffindor:
-        "Gryffindors never hesitate. Especially when the deadline is tomorrow.",
+        "Gryffindors never back down. Especially when the deadline is tomorrow.",
 
     Hufflepuff:
         "Hufflepuffs know that every good architecture studio needs coffee.",
@@ -2191,6 +2285,17 @@ choices.forEach(
                 */
 
                 saveResult(
+                    fullName,
+                    selectedHouse
+                );
+
+
+                /*
+                   Also save the participant to the shared
+                   Google Sheet roster.
+                */
+
+                saveToSharedRoster(
                     fullName,
                     selectedHouse
                 );
