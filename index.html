@@ -1200,15 +1200,76 @@ input {
     }
 
 
+    /* MOBILE: keep the whole sorting test visible and usable */
+    #page3 {
+
+        padding: 24px;
+
+        overflow-y: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .hello {
+
+        padding-top: 44px;
+    }
+
+
+    .sorting-intro {
+
+        margin-top: 6px;
+    }
+
+
+    .big-question {
+
+        margin-top: 52px;
+
+        max-width: none;
+
+        font-size: clamp(38px, 10.5vw, 58px);
+
+        line-height: 0.92;
+    }
+
+
     .choices {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+
+        column-gap: 14px;
+
+        row-gap: 0;
+
+        margin-top: 28px;
+
+        padding-bottom: 36px;
     }
 
 
     .choice-drawing {
 
-        height: 130px;
+        height: 105px;
+    }
+
+
+    .choice-image {
+
+        width: 88px;
+
+        height: 88px;
+
+        max-height: 88px;
+    }
+
+
+    .choice-name {
+
+        margin-top: 8px;
+
+        font-size: 18px;
     }
 }
 
