@@ -2264,6 +2264,28 @@ function showStoredResult() {
    HOUSE DATA
 ========================================================= */
 
+const houseJokes = {
+
+    Ravenclaw:
+        "The cleverest Ravenclaws always have the backup file.",
+
+    Gryffindor:
+        "Gryffindors never back down. Especially when the deadline is tomorrow.",
+
+    Hufflepuff:
+        "Hufflepuffs know that every good architecture studio needs coffee.",
+
+    Slytherin:
+        "Slytherins always print what they need — and only what they need."
+
+};
+
+
+/*
+   Check for an existing result only after houseJokes
+   has been initialized.
+*/
+
 const hasStoredResult =
     showStoredResult();
 
@@ -2286,28 +2308,11 @@ if (hasStoredResult) {
 
 }
 
+
 const choices =
     document.querySelectorAll(
         ".choice"
     );
-
-
-const houseJokes = {
-
-    Ravenclaw:
-        "The cleverest Ravenclaws always have the backup file.",
-
-    Gryffindor:
-        "Gryffindors never back down. Especially when the deadline is tomorrow.",
-
-    Hufflepuff:
-        "Hufflepuffs know that every good architecture studio needs coffee.",
-
-    Slytherin:
-        "Slytherins always print what they need — and only what they need."
-
-};
-
 
 
 /* =========================================================
