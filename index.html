@@ -1938,6 +1938,14 @@ setTimeout(
 setTimeout(
     function() {
 
+        if (
+            localStorage.getItem(
+                "cogwartsResult"
+            )
+        ) {
+            return;
+        }
+
         logoStage.classList.add(
             "letter-visible"
         );
@@ -2201,8 +2209,82 @@ function saveToSharedRoster(
 
 
 /* =========================================================
+   LOCKED RESULT
+========================================================= */
+
+function showStoredResult() {
+
+    const storedResult =
+        localStorage.getItem("cogwartsResult");
+
+    if (!storedResult) {
+        return false;
+    }
+
+    try {
+
+        const result =
+            JSON.parse(storedResult);
+
+        if (
+            !result ||
+            !result.name ||
+            !result.house
+        ) {
+            return false;
+        }
+
+        document.getElementById(
+            "houseName"
+        ).textContent =
+            result.house;
+
+        document.getElementById(
+            "personName"
+        ).textContent =
+            result.name;
+
+        document.getElementById(
+            "houseJoke"
+        ).textContent =
+            houseJokes[result.house] || "";
+
+        return true;
+
+    } catch (error) {
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
    HOUSE DATA
 ========================================================= */
+
+const hasStoredResult =
+    showStoredResult();
+
+if (hasStoredResult) {
+
+    setTimeout(
+        function() {
+
+            showPage(
+                pages.page5
+            );
+
+            bgmToggle.classList.remove(
+                "hidden"
+            );
+
+        },
+        1800
+    );
+
+}
 
 const choices =
     document.querySelectorAll(
@@ -2281,8 +2363,17 @@ choices.forEach(
 
 
                 /*
-                   Overwrite previous result.
+                   One browser gets one permanent result.
+                   If a result already exists, do nothing.
                 */
+
+                if (
+                    localStorage.getItem(
+                        "cogwartsResult"
+                    )
+                ) {
+                    return;
+                }
 
                 saveResult(
                     fullName,
@@ -2426,17 +2517,29 @@ returnButtons.forEach(
             function() {
 
                 /*
-                   Go directly back to the
-                   four-choice test.
-
-                   Previous result will remain
-                   until a new choice is made,
-                   then it will be overwritten.
+                   Once a result is locked, the logo never
+                   starts a new Sorting Ceremony.
                 */
 
-                showPage(
-                    pages.page3
-                );
+                if (
+                    localStorage.getItem(
+                        "cogwartsResult"
+                    )
+                ) {
+
+                    showStoredResult();
+
+                    showPage(
+                        pages.page5
+                    );
+
+                } else {
+
+                    showPage(
+                        pages.page3
+                    );
+
+                }
 
             }
         );
