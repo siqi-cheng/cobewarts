@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>COGWARTS</title>
+
+
+<style>
+
+/* =========================================================
+   COGWARTS TYPE SYSTEM
+========================================================= */
+
+:root {
+
+    /* ONE GLOBAL BODY SIZE */
+    --body-size: 20px;
+
+    /* SMALL INFORMATION */
+    --small-size: 14px;
+
+    /* MAIN DISPLAY */
+    --display-size:
+        clamp(56px, 6.5vw, 110px);
+
+    /* SORTING ANIMATION */
+    --sorting-size:
+        clamp(48px, 5.3vw, 84px);
+
+
+    --white: #fff;
+
+    --grey: #777;
+
+    --input-grey: #666;
+
+    --placeholder-grey: #444;
+
+    --dark-line: #333;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+html,
+body {
+
+    width: 100%;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #000;
+
+    color: #fff;
+
+    font-family:
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+button,
+input {
+
+    font: inherit;
+}
+
+
+
+/* =========================================================
+   GLOBAL TYPE
+========================================================= */
+
+.type-small {
+
+    font-size: var(--small-size);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    letter-spacing: 0.01em;
+}
+
+
+.type-body {
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+.type-display {
+
+    font-size: var(--display-size);
+
+    font-weight: 700;
+
+    line-height: 0.88;
+
+    letter-spacing: -0.055em;
+}
+
+
+
+/* =========================================================
+   BGM CONTROL
+========================================================= */
+
+.bgm-toggle.hidden {
+
+    display: none;
+}
+
+
+.bgm-toggle {
+
+    position: fixed;
+
+    left: 24px;
+
+    bottom: 24px;
+
+    z-index: 1000;
+
+    width: 24px;
+
+    height: 24px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    font-weight: 400;
+
+    line-height: 24px;
+
+    text-align: center;
+}
+
+
+.bgm-toggle:hover {
+
+    opacity: 0.55;
+}
+
+
+.bgm-toggle.off {
+
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   PAGE SYSTEM
+========================================================= */
+
+.page {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    background: #000;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition: opacity 0.5s ease;
+}
+
+
+.page.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+
+/* =========================================================
+   GLOBAL COGWARTS LOGO
+========================================================= */
+
+.site-logo {
+
+    position: absolute;
+
+    top: 32px;
+
+    left: 42px;
+
+    z-index: 100;
+
+    border: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: -0.045em;
+
+    transition: opacity 0.2s ease;
+}
+
+
+.site-logo:hover {
+
+    opacity: 0.55;
+}
+
+
+
+/* =========================================================
+   PAGE 1
+   COBE → COGWARTS
+========================================================= */
+
+#page1 {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.logo-stage {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.logo-word {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    white-space: nowrap;
+
+    font-size:
+        clamp(72px, 8.5vw, 138px);
+
+    font-weight: 700;
+
+    line-height: 0.9;
+
+    letter-spacing: -0.045em;
+}
+
+
+.logo-cobe {
+
+    opacity: 1;
+}
+
+
+.logo-cogwarts {
+
+    opacity: 0;
+}
+
+
+.logo-stage.transforming
+.logo-cobe {
+
+    animation:
+        cobeOut
+        1.2s
+        ease
+        forwards;
+}
+
+
+.logo-stage.transforming
+.logo-cogwarts {
+
+    animation:
+        cogwartsIn
+        1.5s
+        ease
+        forwards;
+}
+
+
+@keyframes cobeOut {
+
+    0% {
+        opacity: 1;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes cogwartsIn {
+
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+/* =========================================================
+   PAGE 1 — LETTER
+========================================================= */
+
+.letter-area {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: calc(50% + 115px);
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 0.8s ease;
+}
+
+
+.logo-stage.letter-visible
+.letter-area {
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+
+/* =========================================================
+   PIXEL ENVELOPE
+========================================================= */
+
+.pixel-envelope {
+
+    position: relative;
+
+    width: 62px;
+
+    height: 43px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    display: block;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.pixel-envelope svg {
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 62px;
+
+    height: 43px;
+
+    display: block;
+}
+
+
+.envelope-outline {
+
+    fill: none;
+
+    stroke: #fff;
+
+    stroke-width: 1;
+
+    vector-effect: non-scaling-stroke;
+}
+
+
+.envelope-flap {
+
+    fill: none;
+
+    stroke: #fff;
+
+    stroke-width: 1;
+
+    stroke-linecap: butt;
+
+    stroke-linejoin: miter;
+
+    vector-effect: non-scaling-stroke;
+}
+
+
+.pixel-envelope:hover {
+
+    transform:
+        translateY(-3px);
+}
+
+
+.letter-text {
+
+    margin-top: 20px;
+
+    color: var(--grey);
+
+    cursor: pointer;
+}
+
+
+.letter-text:hover {
+
+    color: #fff;
+}
+
+
+
+/* =========================================================
+   LETTER → YOU'RE INVITED
+========================================================= */
+
+.invited-message {
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+.invited-message.visible {
+
+    display: flex;
+}
+
+
+.invited-title {
+
+    color: #fff;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+.invited-continue {
+
+    margin-top: 22px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--grey);
+
+    cursor: pointer;
+
+    font-size: var(--small-size);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    letter-spacing: 0.01em;
+}
+
+
+.invited-continue:hover {
+
+    color: #fff;
+}
+
+
+
+/* =========================================================
+   PAGE 2
+   SORTING CEREMONY / NAME
+========================================================= */
+
+#page2 {
+
+    padding: 32px 42px;
+}
+
+
+.intro-content {
+
+    position: absolute;
+
+    left: 42px;
+
+    bottom: 72px;
+
+    max-width: 900px;
+}
+
+
+.intro-title {
+
+    font-size: var(--display-size);
+
+    font-weight: 700;
+
+    line-height: 0.88;
+
+    letter-spacing: -0.055em;
+
+    color: #fff;
+}
+
+
+.intro-date {
+
+    margin-top: 30px;
+
+    color: #fff;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+.intro-question {
+
+    margin-top: 45px;
+
+    color: #fff;
+}
+
+
+.name-row {
+
+    margin-top: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    max-width: 650px;
+}
+
+
+.name-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+
+    border-bottom:
+        1px solid var(--input-grey);
+
+    background: transparent;
+
+    color: #fff;
+
+    padding:
+        7px 0 11px;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+
+    outline: none;
+}
+
+
+.name-input::placeholder {
+
+    color: var(--grey);
+}
+
+
+.name-input:focus {
+
+    border-bottom-color: #fff;
+}
+
+
+.enter-button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    cursor: pointer;
+
+    padding: 7px 0;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+.enter-button:hover {
+
+    opacity: 0.55;
+}
+
+
+
+/* =========================================================
+   PAGE 3
+   SORTING QUESTION
+========================================================= */
+
+#page3 {
+
+    padding: 32px 42px;
+
+    overflow: hidden;
+}
+
+
+.hello {
+
+    color: #fff;
+
+    padding-top: 48px;
+}
+
+
+.sorting-intro {
+
+    margin-top: 8px;
+
+    color: #fff;
+}
+
+
+
+/* =========================================================
+   MAIN QUESTION
+========================================================= */
+
+.big-question {
+
+    margin-top: 72px;
+
+    max-width: 1250px;
+
+    font-size:
+        clamp(52px, 5.8vw, 92px);
+
+    font-weight: 700;
+
+    line-height: 0.92;
+
+    letter-spacing: -0.055em;
+
+    color: #fff;
+}
+
+
+
+/* =========================================================
+   FOUR OPTIONS
+========================================================= */
+
+.choices {
+
+    margin-top: 34px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+.choice {
+
+    border: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    text-align: center;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+
+.choice:hover {
+
+    border-top-color: #fff;
+}
+
+
+
+/* =========================================================
+   OPTION NUMBER
+========================================================= */
+
+.choice-number {
+
+    color: var(--grey);
+
+    margin-bottom: 12px;
+}
+
+
+
+/* =========================================================
+   PIXEL DRAWING AREA
+   NOW 85PX — NOT 55PX
+========================================================= */
+
+.choice-drawing {
+
+    height: 170px;
+
+    border-bottom:
+        1px solid var(--dark-line);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--placeholder-grey);
+
+    margin-top: 0;
+}
+
+
+.choice-image {
+
+    width: 140px;
+
+    height: 140px;
+
+    max-width: 100%;
+
+    max-height: 140px;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin: 0 auto;
+}
+
+
+
+/* =========================================================
+   OPTION NAME
+========================================================= */
+
+.choice-name {
+
+    margin-top: 11px;
+
+    color: #fff;
+
+    text-align: center;
+}
+
+
+
+/* =========================================================
+   PAGE 4
+   SORTING ANIMATION
+========================================================= */
+
+#page4 {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+.sorting-text {
+
+    font-size: var(--sorting-size);
+
+    font-weight: 700;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.055em;
+
+    color: #fff;
+
+    max-width: 100vw;
+
+    padding: 0 30px;
+}
+
+
+.sorting-text span {
+
+    display: block;
+
+    opacity: 0;
+}
+
+
+@keyframes sortingLine {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+
+/* =========================================================
+   PAGE 5
+   FINAL HOUSE
+========================================================= */
+
+#page5 {
+
+    padding: 32px 42px;
+}
+
+
+.result-wrapper {
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+
+/*
+   EVERYTHING HERE IS BODY SIZE
+   EXCEPT HOUSE NAME.
+*/
+
+.result-label {
+
+    color: #fff;
+
+    margin-bottom: 18px;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+
+/*
+   ONLY HOUSE NAME USES DISPLAY SIZE
+*/
+
+.house-name {
+
+    font-size: var(--display-size);
+
+    font-weight: 700;
+
+    line-height: 0.83;
+
+    letter-spacing: -0.065em;
+
+    color: #fff;
+
+    margin-bottom: 38px;
+}
+
+
+
+/*
+   BODY SIZE
+*/
+
+.person-name {
+
+    color: #fff;
+
+    margin-bottom: 35px;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+
+/*
+   SAME BODY SIZE AS:
+   "What should the Sorting Hat call you?"
+*/
+
+.house-joke {
+
+    max-width: 900px;
+
+    color: #fff;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+
+/*
+   BODY SIZE
+*/
+
+.house-set {
+
+    max-width: 700px;
+
+    margin-top: 65px;
+
+    color: #fff;
+
+    font-size: var(--body-size);
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.025em;
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .big-question {
+
+        font-size:
+            clamp(48px, 5.8vw, 82px);
+    }
+
+
+    .choice-drawing {
+
+        height: 170px;
+    }
+}
+
+
+
+@media (max-width: 800px) {
+
+    .bgm-toggle {
+
+        left: 24px;
+
+        bottom: 24px;
+    }
+
+
+    .site-logo {
+
+        left: 24px;
+
+        top: 24px;
+    }
+
+
+    #page2,
+    #page3,
+    #page5 {
+
+        padding: 24px;
+    }
+
+
+    .intro-content {
+
+        left: 24px;
+
+        right: 24px;
+
+        bottom: 30px;
+    }
+
+
+    .hello {
+
+        padding-top: 48px;
+    }
+
+
+    .choices {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .choice-drawing {
+
+        height: 150px;
+    }
+}
+
+
+
+@media (max-width: 500px) {
+
+    .site-logo {
+
+        font-size: 28px;
+    }
+
+
+    .logo-word {
+
+        font-size:
+            clamp(58px, 16vw, 90px);
+    }
+
+
+    .letter-area {
+
+        top:
+            calc(50% + 100px);
+    }
+
+
+    .choices {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .choice-drawing {
+
+        height: 130px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     GLOBAL BGM
+========================================================= -->
+
+<audio
+    id="bgm"
+    src="bgm.mp3"
+    loop
+    preload="auto"
+></audio>
+
+
+<button
+    id="bgmToggle"
+    class="bgm-toggle"
+    type="button"
+    aria-label="Turn music off"
+>
+    ♪
+</button>
+
+
+
+
+<!-- =========================================================
+     PAGE 1
+     COBE → COGWARTS → LETTER → YOU'RE INVITED
+========================================================= -->
+
+<section
+    id="page1"
+    class="page active"
+>
+
+    <div
+        class="logo-stage"
+        id="logoStage"
+    >
+
+        <div
+            class="logo-word logo-cobe"
+        >
+            Cobe
+        </div>
+
+
+        <div
+            class="logo-word logo-cogwarts"
+        >
+            Cogwarts
+        </div>
+
+
+        <div
+            class="letter-area"
+            id="letterArea"
+        >
+
+            <!-- LETTER -->
+
+            <button
+                type="button"
+                class="pixel-envelope"
+                id="envelopeButton"
+                aria-label="Open your letter"
+            >
+
+                <svg
+                    viewBox="0 0 62 43"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <rect
+                        class="envelope-outline"
+                        x="1"
+                        y="1"
+                        width="60"
+                        height="41"
+                    />
+
+
+                    <path
+                        class="envelope-flap"
+                        d="M 13 14 L 31 25 L 49 14"
+                    />
+
+                </svg>
+
+            </button>
+
+
+            <div
+                class="letter-text type-small"
+                id="letterText"
+            >
+                Open your letter →
+            </div>
+
+
+            <!-- AFTER CLICK -->
+
+            <div
+                class="invited-message"
+                id="invitedMessage"
+            >
+
+                <div
+                    class="invited-title"
+                >
+                    You're invited.
+                </div>
+
+
+                <button
+                    type="button"
+                    class="invited-continue"
+                    id="invitedContinue"
+                >
+                    Continue →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PAGE 2
+     SORTING CEREMONY
+========================================================= -->
+
+<section
+    id="page2"
+    class="page"
+>
+
+    <button
+        class="site-logo"
+        type="button"
+        data-return-page
+    >
+        Cogwarts
+    </button>
+
+
+    <div class="intro-content">
+
+        <div class="intro-title">
+            Sorting<br>
+            Ceremony
+        </div>
+
+
+        <div class="intro-date">
+            02 October 2026
+        </div>
+
+
+        <div
+            class="intro-question type-body"
+        >
+            What should the Sorting Hat call you?
+        </div>
+
+
+        <div class="name-row">
+
+            <input
+                id="nameInput"
+                class="name-input"
+                type="text"
+                placeholder="Full name"
+                autocomplete="name"
+            >
+
+
+            <button
+                id="enterButton"
+                class="enter-button"
+                type="button"
+            >
+                Enter →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PAGE 3
+     QUESTION
+========================================================= -->
+
+<section
+    id="page3"
+    class="page"
+>
+
+    <button
+        class="site-logo"
+        type="button"
+        data-return-page
+    >
+        Cogwarts
+    </button>
+
+
+    <div
+        class="hello type-body"
+    >
+        Hello,
+        <span id="displayName"></span>.
+        Come forth.
+    </div>
+
+
+    <div
+        class="sorting-intro type-body"
+    >
+        The Sorting Hat wants to know one thing...
+    </div>
+
+
+    <div class="big-question">
+        What would you save first from a burning architecture studio?
+    </div>
+
+
+    <div class="choices">
+
+
+        <!-- 01 -->
+
+        <button
+            class="choice"
+            data-house="Ravenclaw"
+            type="button"
+        >
+<div
+                class="choice-drawing type-small"
+            >
+                <img class="choice-image" src="cogwarts_icons/rhino_file.png" alt="Rhino File">
+            </div>
+
+
+            <div
+                class="choice-name type-body"
+            >
+                Rhino File
+            </div>
+
+        </button>
+
+
+
+        <!-- 02 -->
+
+        <button
+            class="choice"
+            data-house="Gryffindor"
+            type="button"
+        >
+<div
+                class="choice-drawing type-small"
+            >
+                <img class="choice-image" src="cogwarts_icons/technical_drawings.png" alt="Technical Drawings">
+            </div>
+
+
+            <div
+                class="choice-name type-body"
+            >
+                Technical Drawings
+            </div>
+
+        </button>
+
+
+
+        <!-- 03 -->
+
+        <button
+            class="choice"
+            data-house="Hufflepuff"
+            type="button"
+        >
+<div
+                class="choice-drawing type-small"
+            >
+                <img class="choice-image" src="cogwarts_icons/coffee_machine.png" alt="Coffee Machine">
+            </div>
+
+
+            <div
+                class="choice-name type-body"
+            >
+                Coffee Machine
+            </div>
+
+        </button>
+
+
+
+        <!-- 04 -->
+
+        <button
+            class="choice"
+            data-house="Slytherin"
+            type="button"
+        >
+<div
+                class="choice-drawing type-small"
+            >
+                <img class="choice-image" src="cogwarts_icons/3d_printer.png" alt="3D Printer">
+            </div>
+
+
+            <div
+                class="choice-name type-body"
+            >
+                3D Printer
+            </div>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PAGE 4
+     SORTING
+========================================================= -->
+
+<section
+    id="page4"
+    class="page"
+>
+
+    <button
+        class="site-logo"
+        type="button"
+        data-return-page
+    >
+        Cogwarts
+    </button>
+
+
+    <div class="sorting-text">
+
+        <span class="line-1">
+            Hmmmmmm...
+        </span>
+
+
+        <span class="line-2">
+            Interesting...
+        </span>
+
+
+        <span class="line-3">
+            Very interesting...
+        </span>
+
+
+        <span class="line-4">
+            I know just where you belong.
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PAGE 5
+     RESULT
+========================================================= -->
+
+<section
+    id="page5"
+    class="page"
+>
+
+    <button
+        class="site-logo"
+        type="button"
+        data-return-page
+    >
+        Cogwarts
+    </button>
+
+
+    <div class="result-wrapper">
+
+
+        <div
+            class="result-label"
+        >
+            Your house
+        </div>
+
+
+        <div
+            id="houseName"
+            class="house-name"
+        >
+            Ravenclaw
+        </div>
+
+
+        <div
+            id="personName"
+            class="person-name"
+        >
+            Name
+        </div>
+
+
+        <div
+            id="houseJoke"
+            class="house-joke"
+        >
+            The cleverest Ravenclaws always have the backup file.
+        </div>
+
+
+        <div
+            class="house-set"
+        >
+            Your house is set.
+            See you on 02 October 2026.
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   PAGE CONTROL
+========================================================= */
+
+const pages = {
+
+    page1:
+        document.getElementById("page1"),
+
+    page2:
+        document.getElementById("page2"),
+
+    page3:
+        document.getElementById("page3"),
+
+    page4:
+        document.getElementById("page4"),
+
+    page5:
+        document.getElementById("page5")
+
+};
+
+
+function showPage(page) {
+
+    Object.values(pages).forEach(
+        function(item) {
+
+            item.classList.remove("active");
+
+        }
+    );
+
+
+    page.classList.add("active");
+
+
+    if (page === pages.page1) {
+
+        bgmToggle.classList.add("hidden");
+
+    } else {
+
+        bgmToggle.classList.remove("hidden");
+
+    }
+
+}
+
+
+
+/* =========================================================
+   BGM
+========================================================= */
+
+const bgm =
+    document.getElementById("bgm");
+
+
+const bgmToggle =
+    document.getElementById("bgmToggle");
+
+
+let musicEnabled = true;
+
+
+function updateBgmButton() {
+
+    bgmToggle.textContent = "♪";
+
+    bgmToggle.classList.toggle(
+        "off",
+        !musicEnabled
+    );
+
+    bgmToggle.setAttribute(
+        "aria-label",
+        musicEnabled
+            ? "Turn music off"
+            : "Turn music on"
+    );
+
+}
+
+
+function startBgm() {
+
+    if (!musicEnabled) return;
+
+    bgm.play().catch(
+        function() {
+            /*
+               Browser autoplay restrictions can prevent
+               playback until the user interacts with the page.
+            */
+        }
+    );
+
+}
+
+
+bgmToggle.addEventListener(
+    "click",
+    function(event) {
+
+        event.stopPropagation();
+
+        if (musicEnabled) {
+
+            musicEnabled = false;
+
+            bgm.pause();
+
+        } else {
+
+            musicEnabled = true;
+
+            startBgm();
+
+        }
+
+        updateBgmButton();
+
+    }
+);
+
+
+updateBgmButton();
+
+bgmToggle.classList.add("hidden");
+
+showPage(pages.page1);
+
+bgmToggle.classList.add("hidden");
+
+
+/* =========================================================
+   PAGE 1
+========================================================= */
+
+const logoStage =
+    document.getElementById(
+        "logoStage"
+    );
+
+
+const letterArea =
+    document.getElementById(
+        "letterArea"
+    );
+
+
+const envelopeButton =
+    document.getElementById(
+        "envelopeButton"
+    );
+
+
+const letterText =
+    document.getElementById(
+        "letterText"
+    );
+
+
+const invitedMessage =
+    document.getElementById(
+        "invitedMessage"
+    );
+
+
+const invitedContinue =
+    document.getElementById(
+        "invitedContinue"
+    );
+
+
+
+/*
+   Cobe stays for 1 second.
+*/
+
+setTimeout(
+    function() {
+
+        logoStage.classList.add(
+            "transforming"
+        );
+
+    },
+    1000
+);
+
+
+
+/*
+   Show letter after Cogwarts.
+*/
+
+setTimeout(
+    function() {
+
+        logoStage.classList.add(
+            "letter-visible"
+        );
+
+        bgmToggle.classList.remove(
+            "hidden"
+        );
+
+    },
+    2800
+);
+
+
+
+/* =========================================================
+   OPEN LETTER
+   SAME PAGE
+========================================================= */
+
+function openLetter() {
+
+    startBgm();
+
+    envelopeButton.style.display =
+        "none";
+
+
+    letterText.style.display =
+        "none";
+
+
+    invitedMessage.classList.add(
+        "visible"
+    );
+
+}
+
+
+envelopeButton.addEventListener(
+    "click",
+    openLetter
+);
+
+
+letterText.addEventListener(
+    "click",
+    openLetter
+);
+
+
+
+/* =========================================================
+   CONTINUE AFTER YOU'RE INVITED
+========================================================= */
+
+invitedContinue.addEventListener(
+    "click",
+    function() {
+
+        showPage(
+            pages.page2
+        );
+
+        nameInput.focus();
+
+    }
+);
+
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+const nameInput =
+    document.getElementById(
+        "nameInput"
+    );
+
+
+const enterButton =
+    document.getElementById(
+        "enterButton"
+    );
+
+
+const displayName =
+    document.getElementById(
+        "displayName"
+    );
+
+
+function enterName() {
+
+    const fullName =
+        nameInput.value.trim();
+
+
+    const nameParts =
+        fullName
+            .split(/\s+/)
+            .filter(Boolean);
+
+
+    if (
+        nameParts.length < 2
+    ) {
+
+        nameInput.focus();
+
+        nameInput.setCustomValidity(
+            "Please enter your full name."
+        );
+
+        nameInput.reportValidity();
+
+        return;
+
+    }
+
+
+    nameInput.setCustomValidity("");
+
+
+    displayName.textContent =
+        fullName;
+
+
+    showPage(
+        pages.page3
+    );
+
+}
+
+
+enterButton.addEventListener(
+    "click",
+    enterName
+);
+
+
+nameInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            enterName();
+
+        }
+
+    }
+);
+
+
+nameInput.addEventListener(
+    "input",
+    function() {
+
+        nameInput.setCustomValidity("");
+
+    }
+);
+
+
+
+/* =========================================================
+   HOUSE DATA
+========================================================= */
+
+const choices =
+    document.querySelectorAll(
+        ".choice"
+    );
+
+
+const houseJokes = {
+
+    Ravenclaw:
+        "The cleverest Ravenclaws always have the backup file.",
+
+    Gryffindor:
+        "Gryffindors never hesitate. Especially when the deadline is tomorrow.",
+
+    Hufflepuff:
+        "Hufflepuffs know that every good architecture studio needs coffee.",
+
+    Slytherin:
+        "Slytherins always print what they need — and only what they need."
+
+};
+
+
+
+/* =========================================================
+   ONE DEVICE = ONE RESULT
+========================================================= */
+
+function saveResult(
+    fullName,
+    house
+) {
+
+    const result = {
+
+        name:
+            fullName,
+
+        house:
+            house,
+
+        timestamp:
+            Date.now()
+
+    };
+
+
+    localStorage.setItem(
+        "cogwartsResult",
+        JSON.stringify(result)
+    );
+
+}
+
+
+
+/* =========================================================
+   HOUSE SELECTION
+========================================================= */
+
+choices.forEach(
+    function(choice) {
+
+        choice.addEventListener(
+            "click",
+            function() {
+
+
+                const selectedHouse =
+                    choice.dataset.house;
+
+
+                const fullName =
+                    nameInput.value.trim();
+
+
+                /*
+                   Overwrite previous result.
+                */
+
+                saveResult(
+                    fullName,
+                    selectedHouse
+                );
+
+
+                /*
+                   Final page.
+                */
+
+                document.getElementById(
+                    "houseName"
+                ).textContent =
+                    selectedHouse;
+
+
+                document.getElementById(
+                    "personName"
+                ).textContent =
+                    fullName;
+
+
+                document.getElementById(
+                    "houseJoke"
+                ).textContent =
+                    houseJokes[
+                        selectedHouse
+                    ];
+
+
+
+                /* -----------------------------------------
+                   RESET SORTING ANIMATION
+                ----------------------------------------- */
+
+                const sortingText =
+                    document.querySelector(
+                        ".sorting-text"
+                    );
+
+
+                const lines =
+                    sortingText.querySelectorAll(
+                        "span"
+                    );
+
+
+                lines.forEach(
+                    function(span) {
+
+                        span.style.animation =
+                            "none";
+
+                        span.style.opacity =
+                            "0";
+
+                    }
+                );
+
+
+                void sortingText.offsetWidth;
+
+
+                lines[0].style.animation =
+                    "sortingLine 1.3s ease forwards";
+
+
+                lines[1].style.animation =
+                    "sortingLine 1.3s ease 1.5s forwards";
+
+
+                lines[2].style.animation =
+                    "sortingLine 1.3s ease 3s forwards";
+
+
+                lines[3].style.animation =
+                    "sortingLine 1.3s ease 4.5s forwards";
+
+
+
+                /* -----------------------------------------
+                   SHOW SORTING PAGE
+                ----------------------------------------- */
+
+                showPage(
+                    pages.page4
+                );
+
+
+
+                /* -----------------------------------------
+                   REVEAL RESULT
+                ----------------------------------------- */
+
+                setTimeout(
+                    function() {
+
+                        showPage(
+                            pages.page5
+                        );
+
+                    },
+                    6500
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   COGWARTS → RESTART TEST
+========================================================= */
+
+const returnButtons =
+    document.querySelectorAll(
+        "[data-return-page]"
+    );
+
+
+returnButtons.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                /*
+                   Go directly back to the
+                   four-choice test.
+
+                   Previous result will remain
+                   until a new choice is made,
+                   then it will be overwritten.
+                */
+
+                showPage(
+                    pages.page3
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
