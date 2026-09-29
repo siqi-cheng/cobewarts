@@ -269,6 +269,59 @@ input {
 }
 
 
+/* =========================================================
+   SHARE BUTTON
+========================================================= */
+
+.share-button {
+
+    position: absolute;
+
+    top: 32px;
+
+    right: 42px;
+
+    z-index: 100;
+
+    border: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-size: var(--small-size);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    letter-spacing: 0.01em;
+
+    transition: opacity 0.2s ease;
+}
+
+
+.share-button:hover {
+
+    opacity: 0.55;
+}
+
+
+@media (max-width: 800px) {
+
+    .share-button {
+
+        top: 24px;
+
+        right: 24px;
+    }
+}
+
+
 
 /* =========================================================
    PAGE 1
@@ -1273,6 +1326,37 @@ input {
     }
 }
 
+
+
+
+/* PUBLIC LANDING MESSAGE — EXACTLY SAME TYPOGRAPHY */
+.sorting-over-message .sorting-over-title,
+.sorting-over-message .sorting-over-subtitle,
+.sorting-over-message .sorting-over-cta {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.025em !important;
+    text-transform: none !important;
+    text-decoration: none;
+}
+
+.sorting-over-message .sorting-over-title,
+.sorting-over-message .sorting-over-subtitle {
+    color: #fff;
+}
+
+.sorting-over-message .sorting-over-cta {
+    color: #777;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
 </style>
 
 </head>
@@ -1300,6 +1384,15 @@ input {
     aria-label="Turn music off"
 >
     ♪
+</button>
+
+
+<button
+    id="shareButton"
+    class="share-button"
+    type="button"
+>
+    Share →
 </button>
 
 
@@ -1375,8 +1468,10 @@ input {
             <div
                 class="letter-text type-small"
                 id="letterText"
+                style="color: #fff; text-align: center;"
             >
-                Open your letter →
+                Sorting is over.<br>
+                See you on 02 October.
             </div>
 
 
@@ -1390,7 +1485,15 @@ input {
                 <div
                     class="invited-title"
                 >
-                    You're invited.
+                    Sorting is over.
+                </div>
+
+
+                <div
+                    class="type-small"
+                    style="margin-top: 12px; color: #fff;"
+                >
+                    See you on 02 October.
                 </div>
 
 
@@ -1399,7 +1502,7 @@ input {
                     class="invited-continue"
                     id="invitedContinue"
                 >
-                    Continue →
+                    Try the Sorting Hat →
                 </button>
 
             </div>
@@ -1938,14 +2041,6 @@ setTimeout(
 setTimeout(
     function() {
 
-        if (
-            localStorage.getItem(
-                "cobewartsResult"
-            )
-        ) {
-            return;
-        }
-
         logoStage.classList.add(
             "letter-visible"
         );
@@ -2115,150 +2210,10 @@ nameInput.addEventListener(
 
 
 /* =========================================================
-   SHARED ROSTER API
+   PUBLIC FUN MODE
+   Registration is closed. Results are no longer saved to
+   Google Sheets, and visitors can sort themselves freely.
 ========================================================= */
-
-const ROSTER_API_URL =
-    "https://script.google.com/macros/s/AKfycbyqz66b1RrAN9qd_ciyyrgBwtkfilxUK5KIR4hhOdvGt6FwLnbQy5mVwqsIJc21IyA/exec";
-
-
-function getParticipantId() {
-
-    const storageKey = "cobewartsParticipantId";
-
-    let participantId =
-        localStorage.getItem(storageKey);
-
-
-    if (!participantId) {
-
-        if (
-            window.crypto &&
-            typeof window.crypto.randomUUID === "function"
-        ) {
-
-            participantId =
-                "cobewarts_" +
-                window.crypto.randomUUID();
-
-        } else {
-
-            participantId =
-                "cobewarts_" +
-                Math.random().toString(36).slice(2) +
-                Date.now().toString(36);
-
-        }
-
-
-        localStorage.setItem(
-            storageKey,
-            participantId
-        );
-
-    }
-
-
-    return participantId;
-
-}
-
-
-function saveToSharedRoster(
-    fullName,
-    house
-) {
-
-    const participantId =
-        getParticipantId();
-
-
-    const params =
-        new URLSearchParams({
-            action: "save",
-            id: participantId,
-            name: fullName,
-            house: house
-        });
-
-
-    /*
-       Google Apps Script is used as a simple GET API.
-       no-cors lets the browser send the request without
-       exposing the response to the page. The Sheet receives
-       the data even though the response is opaque.
-    */
-
-    fetch(
-        ROSTER_API_URL + "?" + params.toString(),
-        {
-            method: "GET",
-            mode: "no-cors",
-            keepalive: true
-        }
-    ).catch(
-        function() {
-            /*
-               The local result still works if the network
-               is temporarily unavailable.
-            */
-        }
-    );
-
-}
-
-
-/* =========================================================
-   LOCKED RESULT
-========================================================= */
-
-function showStoredResult() {
-
-    const storedResult =
-        localStorage.getItem("cobewartsResult");
-
-    if (!storedResult) {
-        return false;
-    }
-
-    try {
-
-        const result =
-            JSON.parse(storedResult);
-
-        if (
-            !result ||
-            !result.name ||
-            !result.house
-        ) {
-            return false;
-        }
-
-        document.getElementById(
-            "houseName"
-        ).textContent =
-            result.house;
-
-        document.getElementById(
-            "personName"
-        ).textContent =
-            result.name;
-
-        document.getElementById(
-            "houseJoke"
-        ).textContent =
-            houseJokes[result.house] || "";
-
-        return true;
-
-    } catch (error) {
-
-        return false;
-
-    }
-
-}
-
 
 /* =========================================================
    HOUSE DATA
@@ -2281,34 +2236,6 @@ const houseJokes = {
 };
 
 
-/*
-   Check for an existing result only after houseJokes
-   has been initialized.
-*/
-
-const hasStoredResult =
-    showStoredResult();
-
-if (hasStoredResult) {
-
-    setTimeout(
-        function() {
-
-            showPage(
-                pages.page5
-            );
-
-            bgmToggle.classList.remove(
-                "hidden"
-            );
-
-        },
-        4000
-    );
-
-}
-
-
 const choices =
     document.querySelectorAll(
         ".choice"
@@ -2316,39 +2243,9 @@ const choices =
 
 
 /* =========================================================
-   ONE DEVICE = ONE RESULT
-========================================================= */
-
-function saveResult(
-    fullName,
-    house
-) {
-
-    const result = {
-
-        name:
-            fullName,
-
-        house:
-            house,
-
-        timestamp:
-            Date.now()
-
-    };
-
-
-    localStorage.setItem(
-        "cobewartsResult",
-        JSON.stringify(result)
-    );
-
-}
-
-
-
-/* =========================================================
    HOUSE SELECTION
+   Public / post-event mode: visitors can sort as many
+   times as they like. Nothing is saved or registered.
 ========================================================= */
 
 choices.forEach(
@@ -2358,154 +2255,75 @@ choices.forEach(
             "click",
             function() {
 
-
                 const selectedHouse =
                     choice.dataset.house;
 
-
                 const fullName =
                     nameInput.value.trim();
-
-
-                /*
-                   One browser gets one permanent result.
-                   If a result already exists, do nothing.
-                */
-
-                if (
-                    localStorage.getItem(
-                        "cobewartsResult"
-                    )
-                ) {
-                    return;
-                }
-
-                saveResult(
-                    fullName,
-                    selectedHouse
-                );
-
-
-                /*
-                   Also save the participant to the shared
-                   Google Sheet roster.
-                */
-
-                saveToSharedRoster(
-                    fullName,
-                    selectedHouse
-                );
-
-
-                /*
-                   Final page.
-                */
 
                 document.getElementById(
                     "houseName"
                 ).textContent =
                     selectedHouse;
 
-
                 document.getElementById(
                     "personName"
                 ).textContent =
                     fullName;
 
-
                 document.getElementById(
                     "houseJoke"
                 ).textContent =
-                    houseJokes[
-                        selectedHouse
-                    ];
-
-
-
-                /* -----------------------------------------
-                   RESET SORTING ANIMATION
-                ----------------------------------------- */
+                    houseJokes[selectedHouse];
 
                 const sortingText =
                     document.querySelector(
                         ".sorting-text"
                     );
 
-
                 const lines =
                     sortingText.querySelectorAll(
                         "span"
                     );
 
-
                 lines.forEach(
                     function(span) {
-
-                        span.style.animation =
-                            "none";
-
-                        span.style.opacity =
-                            "0";
-
+                        span.style.animation = "none";
+                        span.style.opacity = "0";
                     }
                 );
 
-
                 void sortingText.offsetWidth;
-
 
                 lines[0].style.animation =
                     "sortingLine 1.3s ease forwards";
 
-
                 lines[1].style.animation =
                     "sortingLine 1.3s ease 1.5s forwards";
-
 
                 lines[2].style.animation =
                     "sortingLine 1.3s ease 3s forwards";
 
-
                 lines[3].style.animation =
                     "sortingLine 1.3s ease 4.5s forwards";
 
-
-
-                /* -----------------------------------------
-                   SHOW SORTING PAGE
-                ----------------------------------------- */
-
-                showPage(
-                    pages.page4
-                );
-
-
-
-                /* -----------------------------------------
-                   REVEAL RESULT
-                ----------------------------------------- */
+                showPage(pages.page4);
 
                 setTimeout(
                     function() {
-
-                        showPage(
-                            pages.page5
-                        );
-
+                        showPage(pages.page5);
                     },
                     6500
                 );
-
             }
         );
-
     }
 );
 
 
-
 /* =========================================================
    COBEWARTS → RESTART TEST
+   Always available in public / fun mode.
 ========================================================= */
 
 const returnButtons =
@@ -2520,38 +2338,68 @@ returnButtons.forEach(
         button.addEventListener(
             "click",
             function() {
-
-                /*
-                   Once a result is locked, the logo never
-                   starts a new Sorting Ceremony.
-                */
-
-                if (
-                    localStorage.getItem(
-                        "cobewartsResult"
-                    )
-                ) {
-
-                    showStoredResult();
-
-                    showPage(
-                        pages.page5
-                    );
-
-                } else {
-
-                    showPage(
-                        pages.page3
-                    );
-
-                }
-
+                showPage(pages.page3);
             }
         );
 
     }
 );
 
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+const shareButton =
+    document.getElementById("shareButton");
+
+
+shareButton.addEventListener(
+    "click",
+    async function() {
+
+        const shareData = {
+            title: "Cobewarts",
+            text: "Find out which Cobewarts House you belong to.",
+            url: window.location.href
+        };
+
+        try {
+
+            if (navigator.share) {
+
+                await navigator.share(shareData);
+
+            } else if (navigator.clipboard) {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                shareButton.textContent = "Link copied";
+
+                setTimeout(
+                    function() {
+                        shareButton.textContent = "Share →";
+                    },
+                    1800
+                );
+
+            } else {
+
+                window.prompt(
+                    "Copy this link:",
+                    window.location.href
+                );
+
+            }
+
+        } catch (error) {
+            /* User cancelled the native share sheet. */
+        }
+
+    }
+);
 </script>
 
 </body>
